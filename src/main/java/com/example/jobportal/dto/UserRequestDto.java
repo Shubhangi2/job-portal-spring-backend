@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 @Data
 public class UserRequestDto {
     private String userName;
+    private String passwordHash;
     private String email;
     private String phone;
     private String role;

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Entity
 @Data
@@ -20,4 +22,17 @@ public class Users {
     private boolean isUserActive;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        ZonedDateTime istTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+        this.createdAt = Timestamp.valueOf(istTime.toLocalDateTime());
+        this.updatedAt = Timestamp.valueOf(istTime.toLocalDateTime());
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        ZonedDateTime istTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+        this.updatedAt = Timestamp.valueOf(istTime.toLocalDateTime());
+    }
 }
