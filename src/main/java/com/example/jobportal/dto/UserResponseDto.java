@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 @Data
 public class UserResponseDto {
     private Long id;
-    private String userName;
+    private String fullName;
     private String email;
     private String phone;
     private String role;
