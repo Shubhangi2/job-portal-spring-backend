@@ -1,4 +1,4 @@
-package com.example.jobportal.controller.public_routes;
+package com.example.jobportal.controller;
 
 import com.example.jobportal.dto.ApiResponse;
 import com.example.jobportal.dto.LoginRequest;
