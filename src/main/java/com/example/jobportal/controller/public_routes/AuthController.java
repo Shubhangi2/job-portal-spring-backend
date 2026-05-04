@@ -1,4 +1,4 @@
-package com.example.jobportal.controller;
+package com.example.jobportal.controller.public_routes;
 
 import com.example.jobportal.dto.ApiResponse;
 import com.example.jobportal.dto.LoginRequest;
@@ -31,8 +31,8 @@ public class AuthController {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(userResponse.getId().toString());
 
-        userResponse.setAccessToken(jwtService.generateAccessToken(userDetails));
-        userResponse.setRefreshToken(jwtService.generateRefreshToken(userDetails));
+        userResponse.setAccessToken(jwtService.generateAccessToken(userDetails, userResponse.getRole()));
+        userResponse.setRefreshToken(jwtService.generateRefreshToken(userDetails, userResponse.getRole()));
 
         return ResponseEntity.ok(ApiResponse.created(userResponse, "User registered successfully"));
     }
@@ -45,8 +45,8 @@ public class AuthController {
             return ResponseEntity.ok(ApiResponse.error("Invalid user credentials", 200));
         }
         UserDetails userDetails = userDetailsService.loadUserByUsername(response.getId().toString());
-        response.setAccessToken(jwtService.generateAccessToken(userDetails));
-        response.setRefreshToken(jwtService.generateRefreshToken(userDetails));
+        response.setAccessToken(jwtService.generateAccessToken(userDetails, response.getRole()));
+        response.setRefreshToken(jwtService.generateRefreshToken(userDetails, response.getRole()));
 
         return ResponseEntity.ok(ApiResponse.success(response, "Login successful"));
     }
@@ -54,12 +54,13 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(@RequestBody Map<String, String> body) { // Fix 3: uncommented — this is valid and useful, no reason to leave it out
         String refreshToken = body.get("refreshToken");
-        String username = jwtService.extractUsername(refreshToken);
-        UserDetails user = userDetailsService.loadUserByUsername(username);
+        String role = jwtService.extractRole(refreshToken);
+        String id = jwtService.extractUsername(refreshToken);
+        UserDetails user = userDetailsService.loadUserByUsername(id);
 
         if (jwtService.isTokenValid(refreshToken, user)) {
             return ResponseEntity.ok(Map.of(
-                    "accessToken", jwtService.generateAccessToken(user)
+                    "accessToken", jwtService.generateAccessToken(user, role)
             ));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

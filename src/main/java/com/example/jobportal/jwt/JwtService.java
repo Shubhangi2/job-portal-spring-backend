@@ -6,6 +6,8 @@ import io.jsonwebtoken.security.Keys;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -30,17 +32,22 @@ public class JwtService {
         return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateAccessToken(UserDetails user) {
-        return buildToken(user, accessExpiration);
+    public String generateAccessToken(UserDetails user, String role) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("role", role);
+        return buildToken(user, accessExpiration, extraClaims);
     }
 
-    public String generateRefreshToken(UserDetails user) {
-        return buildToken(user, refreshExpiration);
+    public String generateRefreshToken(UserDetails user, String role) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("role", role);
+        return buildToken(user, refreshExpiration, extraClaims);
     }
 
-    private String buildToken(UserDetails user, long expiration) {
+    private String buildToken(UserDetails user, long expiration, Map<String, Object> extraClaims) {
         return Jwts.builder()
                 .subject(user.getUsername())
+                .claims(extraClaims)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigningKey())
@@ -50,6 +57,11 @@ public class JwtService {
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
+    }
+
+
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         return extractUsername(token).equals(userDetails.getUsername())
