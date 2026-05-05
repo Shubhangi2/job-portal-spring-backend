@@ -1,9 +1,9 @@
 package com.example.jobportal.controller;
 
 import com.example.jobportal.dto.ApiResponse;
-import com.example.jobportal.dto.LoginRequest;
-import com.example.jobportal.dto.UserRequestDto;
-import com.example.jobportal.dto.UserResponseDto;
+import com.example.jobportal.dto.auth.LoginRequest;
+import com.example.jobportal.dto.auth.UserRequestDto;
+import com.example.jobportal.dto.auth.UserResponseDto;
 import com.example.jobportal.jwt.JwtService;
 import com.example.jobportal.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class AuthController {
     private final UserDetailsService userDetailsService;
 
 
-    @PostMapping("/register")  // Fix 1: was "/auth/register" → duplicates the class-level "/auth" prefix, making it "/auth/auth/register"
+    @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserResponseDto>> registerUser(@RequestBody UserRequestDto userRequestDto) {
         UserResponseDto userResponse = userService.registerUser(userRequestDto);
 

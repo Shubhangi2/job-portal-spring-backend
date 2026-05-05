@@ -1,8 +1,8 @@
 package com.example.jobportal.services.impl;
 
-import com.example.jobportal.dto.LoginRequest;
-import com.example.jobportal.dto.UserRequestDto;
-import com.example.jobportal.dto.UserResponseDto;
+import com.example.jobportal.dto.auth.LoginRequest;
+import com.example.jobportal.dto.auth.UserRequestDto;
+import com.example.jobportal.dto.auth.UserResponseDto;
 import com.example.jobportal.entities.Users;
 import com.example.jobportal.jwt.JwtService;
 import com.example.jobportal.repositories.UserRepository;

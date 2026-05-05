@@ -1,4 +1,4 @@
-package com.example.jobportal.dto;
+package com.example.jobportal.dto.auth;
 
 import lombok.Data;
 

@@ -1,8 +1,8 @@
 package com.example.jobportal.services;
 
-import com.example.jobportal.dto.LoginRequest;
-import com.example.jobportal.dto.UserRequestDto;
-import com.example.jobportal.dto.UserResponseDto;
+import com.example.jobportal.dto.auth.LoginRequest;
+import com.example.jobportal.dto.auth.UserRequestDto;
+import com.example.jobportal.dto.auth.UserResponseDto;
 
 public interface UserService {
     public UserResponseDto registerUser(UserRequestDto userRequestDto);
